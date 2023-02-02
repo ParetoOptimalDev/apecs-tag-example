@@ -4,7 +4,7 @@
 Assuming you have nix installed, just run:
 
 ```sh
-nix run github:ParetoOptimalDev/apecs-shmup-example
+nix run github:ParetoOptimalDev/apecs-tag-example
 ```
 
 <details>
@@ -24,16 +24,16 @@ Or see the [Nix download page](https://nixos.org/download.html) for other option
 #### with [direnv](https://github.com/direnv/direnv) already installed
 
 ```sh
-git clone https://github.com/ParetoOptimalDev/apecs-shmup-example.git
-cd apecs-shmup-example
+git clone https://github.com/ParetoOptimalDev/apecs-tag-example.git
+cd apecs-tag-example
 , run
 ```
 
 #### without [direnv](https://github.com/direnv/direnv)
 
 ```sh
-git clone https://github.com/ParetoOptimalDev/apecs-shmup-example.git
-cd apecs-shmup-example
+git clone https://github.com/ParetoOptimalDev/apecs-tag-example.git
+cd apecs-tag-example
 nix develop
 , run
 ```
@@ -41,7 +41,7 @@ nix develop
 #### Powers you have in the nix devshell thanks to [srid/haskell-template](https://github.com/srid/haskell-template)
 
 ```shell
-~/apecs-shmup-example $ ,
+~/apecs-tag-example $ ,
 Available commands:
 
 ## Dev Tools
@@ -63,11 +63,3 @@ See the [tips section](https://github.com/srid/haskell-template#tips) on srid/ha
 #### with vscode
 
 See https://srid.ca/haskell-template/start#vscode
-
-# What this is
-
-A nix flake to build the [shmup example from the apecs repo](https://github.com/jonascarpay/apecs/blob/master/examples/Shmup.md).
-
-# Why
-
-Because build issues having to install haskell and system libraries like opengl are a thing of the past thanks to [Nix](https://nixos.org/) :smile:
