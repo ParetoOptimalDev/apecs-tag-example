@@ -80,25 +80,16 @@ triggerEvery dT period phase sys = do
 incrTime :: Float -> System' ()
 incrTime dT = modify global $ \(Time t) -> Time (t + dT)
 
-normV :: forall {a}. Floating a => a -> a -> a
-normV vx vy = sqrt (vx * vx + vy * vy)
+move :: forall {a} {f :: Type -> Type}. (Floating a, Metric f, Epsilon a, Ord a, Num (f a)) => a -> f a -> f a -> f a
+move velocity current target =
+  let vNorm = normalize (current - target)
+   in if norm (current - target) > 69
+        then current + vNorm ^* velocity
+        else current
 
 moveTowardsPlayer :: Position -> Position -> Position
-moveTowardsPlayer playerPos'@(Position pv@(V2 pX pY)) aiPos@(Position aiv@(V2 aiX aiY)) = do
-  -- from https://stackoverflow.com/a/2625107
-  -- float xDistance = playerX-enemyX;
-  let xDistance = pX - aiX
-      -- float yDistance = playerY-enemyY;
-      yDistance = pY - aiY
-      -- float hypotenuse = sqrt((xDistance * xDistance) + (yDistance * yDistance));
-      hypotenuse = sqrt ((xDistance * xDistance) + (yDistance * yDistance))
-      timeFactor = 0.1
-   in if hypotenuse < 400
-        then
-          let yPos = timeFactor * 200 * (yDistance / hypotenuse)
-              xPos = timeFactor * 200 * (xDistance / hypotenuse)
-           in Position (V2 xPos yPos)
-        else aiPos
+moveTowardsPlayer (Position pv) (Position aiv) = do
+  Position $ move (-4) aiv pv
 
 -- TODO don't let players overlap and detect collisions to not allow moving to that (x,y)
 stepAIPosition :: Float -> System' ()
@@ -118,8 +109,8 @@ timeStep dT = do
 
 -- TODO make q exit the game
 initialize = do
-  playerEty <- newEntity (Player, Position playerPos)
-  aiEty1 <- newEntity (AI1, Position aiPos1)
+  playerEty <- newEntity (Player, Position initialPlayerPos)
+  aiEty1 <- newEntity (AI1, Position initialAIPos)
   pass
 
 main :: IO ()
@@ -130,8 +121,8 @@ main = do
     play window (dim . dim . dim $ green) 10 render handleEvent timeStep
 
 -- World Consts
-playerPos = V2 0 (-120)
-aiPos1 = V2 0 0
+initialPlayerPos = V2 100 100
+initialAIPos = V2 0 0
 
 worldSize :: Integer
 worldSize = 500
